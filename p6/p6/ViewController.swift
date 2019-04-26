@@ -15,6 +15,10 @@ import UIKit
 
 class ViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate {
     
+    @IBOutlet show_shifts_button: UIButton!
+    @IBOutlet submit_shifts_button: UIButton!
+    @IBOutlet submit_button: UIButton!
+    
     // If modifying these scopes, delete your previously saved credentials by
     // resetting the iOS simulator or uninstall the app. kGTLRAuthScopeSheetsSpreadsheetsReadonly
     private let scopes = [kGTLRAuthScopeSheetsSpreadsheets]
@@ -95,16 +99,17 @@ class ViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate {
         let spreadsheetId = "1F44M21u6rCOAeeFxhd0q3_XTTET3fCGgVzNF3RyxdXo"
         let range = "A1:Q"
         let rangeToAppend = GTLRSheets_ValueRange.init();
-        
-        let query = GTLRSheetsQuery_SpreadsheetsValuesAppend.query(withObject: rangeToAppend, spreadsheetId: spreadsheetId, range: range)
-        query.valueInputOption = "USER_ENTERED"
-        
-        service.executeQuery(query) { (ticket, result, error) in
+        if (submit_button){
+            let query = GTLRSheetsQuery_SpreadsheetsValuesAppend.query(withObject: rangeToAppend, spreadsheetId: spreadsheetId, range: range)
+            query.valueInputOption = "USER_ENTERED"
             
-            if let error = error {
-                self.showAlert(title: "Error", message: error.localizedDescription)
-            } else {
-                self.output.text = "Success!"
+            service.executeQuery(query) { (ticket, result, error) in
+                
+                if let error = error {
+                    self.showAlert(title: "Error", message: error.localizedDescription)
+                } else {
+                    self.output.text = "Success!"
+                }
             }
         }
     }
@@ -131,6 +136,15 @@ class ViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate {
     
     
     
+    func mainMenu(){
+        if(show_shifts_button){
+            listShifts()
+        }
+        if(submit_shifts_button){
+            appendShifts()
+        }
+        
+    }
    
     func showAlert(title : String, message: String) {
         let alert = UIAlertController(
