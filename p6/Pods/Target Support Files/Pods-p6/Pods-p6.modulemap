@@ -1,0 +1,6 @@
+framework module Pods_p6 {
+  umbrella header "Pods-p6-umbrella.h"
+
+  export *
+  module * { export * }
+}
